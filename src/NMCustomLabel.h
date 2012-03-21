@@ -10,10 +10,8 @@
 #import <CoreText/CoreText.h>
 
 @interface NMCustomLabel : UILabel {
-//	NSString *text;
 	NSString *cleanText;
 	CTTextAlignment ctTextAlignment;
-//	UIColor *textColor;
 	UIColor *textColorBold;
 	CGFloat lineHeight;
 	CGFloat maxLineHeight;
@@ -33,13 +31,10 @@
 	CGColorRef backgroundCGColor;
 }
 
-//@property (nonatomic, copy) NSString *text;
 @property (nonatomic, readonly) NSString *cleanText;
-//@property (nonatomic, strong) UIFont *font;
 @property (nonatomic, strong) UIFont *fontBold;
 @property (nonatomic, strong) UIFont *fontItalic;
 @property (nonatomic) CTTextAlignment ctTextAlignment;
-//@property (nonatomic, strong) UIColor *textColor;
 @property (nonatomic, strong) UIColor *textColorBold;
 @property (nonatomic) CGFloat lineHeight;
 @property (nonatomic) int numberOfLines;

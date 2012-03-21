@@ -16,7 +16,6 @@ static NSRegularExpression *twitterNameEndRegEx;
 
 @implementation NMCustomLabel
 
-//@synthesize text, font, fontBold, fontItalic, textColor;
 @synthesize  cleanText, ctTextAlignment, textColorBold, lineHeight, numberOfLines, shouldBoldAtNames, kern;
 
 +(void)initialize{
@@ -222,11 +221,6 @@ static NSRegularExpression *twitterNameEndRegEx;
 	}
 //	NSLog(@"customlabel - create - %@", text);
 	
-//	CTFontRef bodyFont = CTFontCreateWithName((__bridge CFStringRef)self.font.fontName, self.font.pointSize, NULL);
-//	CTFontRef bodyFontBold = CTFontCreateWithName((__bridge CFStringRef)self.fontBold.fontName, self.fontBold.pointSize, NULL);
-////	NSLog(@"%@: %@ - %f ……… %@", self.fontBold, self.fontBold.fontName, self.fontBold.pointSize, bodyFontBold);
-//	CTFontRef bodyFontItalic = CTFontCreateWithName((__bridge CFStringRef)self.fontItalic.fontName, self.fontItalic.pointSize, NULL);
-
 	[self clearAttrString];
 	attrString = CFAttributedStringCreateMutable(kCFAllocatorDefault, 0);
 	
@@ -257,10 +251,6 @@ static NSRegularExpression *twitterNameEndRegEx;
 
 				NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:(__bridge id)bodyFontBold, kCTFontAttributeName, [textColorBold CGColor], kCTForegroundColorAttributeName, nil];
 				CFAttributedStringSetAttributes(attrString, boldRange, (__bridge CFDictionaryRef)attributes, NO);
-//				if(locOfBoldTag < 0){
-//					locOfBoldTag = 0;
-//				}
-//				locOfBoldTag += boldRange.location + boldRange.length;
 				range0 = range2;
 			}else{
 				break;
@@ -286,10 +276,6 @@ static NSRegularExpression *twitterNameEndRegEx;
 					//				NSLog(@"i %@ boldRange = %d,%d - length = %d", self.text, (int)italRange.location, (int)italRange.length, self.cleanText.length);
 					
 					CFAttributedStringSetAttribute(attrString, italRange, kCTFontAttributeName, bodyFontItalic);
-					//				if(locOfBoldTag < 0){
-					//					locOfBoldTag = 0;
-					//				}
-					//				locOfBoldTag += italRange.location + italRange.length;
 					range0 = range2;
 				}else{
 					break;
@@ -305,7 +291,6 @@ static NSRegularExpression *twitterNameEndRegEx;
 		while(range0.location != NSNotFound){
 			NSRange range1 = [self.text rangeOfString:@"@" options:NSLiteralSearch range:NSMakeRange(range0.location+range0.length, self.text.length - range0.location- range0.length)];
 			if(range1.location != NSNotFound){
-//				NSRange range2 = [self.text rangeOfString:@" " options:NSLiteralSearch range:NSMakeRange(range1.location+range1.length, self.text.length - range1.location- range1.length)];
 				NSRange range2 = [twitterNameEndRegEx rangeOfFirstMatchInString:self.text options:0 range:NSMakeRange(range1.location+range1.length, self.text.length - range1.location- range1.length)];
 				if(range2.location != NSNotFound){
 					CFRange boldRange = CFRangeMake(range1.location, range2.location-range1.location-1);
@@ -328,21 +313,15 @@ static NSRegularExpression *twitterNameEndRegEx;
 			}
 		}
 	}
-//	CFRelease(bodyFont);
-//	CFRelease(bodyFontItalic);
-//	CFRelease(bodyFontBold);
 	
 	//create paragraph style and assign text alignment to it
 	int numParagraphSpecifiers = 3;
-//	CTLineBreakMode lineBreakMode = kCTLineBreakByTruncatingTail;
-//	CGFloat maxLineHeight = 20;
 	maxLineHeight = lineHeight;
 	CGFloat minLineHeight = lineHeight;
 	CTParagraphStyleSetting _settings[] = { 
 		{kCTParagraphStyleSpecifierAlignment, sizeof(ctTextAlignment), &ctTextAlignment},
 		{kCTParagraphStyleSpecifierMaximumLineHeight, sizeof(CGFloat), &maxLineHeight},
 		{kCTParagraphStyleSpecifierMinimumLineHeight, sizeof(CGFloat), &minLineHeight},
-//		{kCTParagraphStyleSpecifierLineBreakMode, sizeof(CTLineBreakMode), &lineBreakMode},
 		{kCTParagraphStyleSpecifierCount, sizeof(int), &numParagraphSpecifiers}
 	};
 	CTParagraphStyleRef paragraphStyle = CTParagraphStyleCreate(_settings, sizeof(_settings) / sizeof(_settings[0]));
@@ -381,26 +360,9 @@ static NSRegularExpression *twitterNameEndRegEx;
 		//on iOS 4, we were getting heights of 14.9 where the line height was 15, so it was getting cut off.  after we stop supporting iOS 4, we could safely kill these lines.
 		suggestedSize.width = round(suggestedSize.width);
 		suggestedSize.height = round(suggestedSize.height);
-//		if(suggestedSize.width > size.width){
-////			suggestedSize.height += lineHeight;
-//		}
-//		suggestedSize.width = roundf(MIN(size.width, suggestedSize.width));
-//		suggestedSize.height = roundf(MIN(size.height, suggestedSize.height));
-
-//		NSLog(@"NMCustomLabel-sizeThatFits: %@ %@ --> %@", cleanText, NSStringFromCGSize(size), NSStringFromCGSize(suggestedSize));
 	}else{
 		suggestedSize = size;
 	}
-//	if(NO){
-//		if(self.numberOfLines > 0 && self.lineHeight > 0){
-//			if(suggestedSize.height / self.lineHeight > self.numberOfLines){
-//				CGFloat oldheight = suggestedSize.height;
-//				suggestedSize.height = self.numberOfLines * self.lineHeight;
-//				NSLog(@"suggested height reduced from %f to %f", oldheight, suggestedSize.height);
-//				shouldTruncate = YES;
-//			}
-//		}
-//	}	
 	return suggestedSize;
 }
 -(void)setFrame:(CGRect)frame{
@@ -436,7 +398,6 @@ static NSRegularExpression *twitterNameEndRegEx;
 		// don't set any line break modes, etc, just let the frame draw as many full lines as will fit 
 		CGRect frameRect = rect;
 		CGMutablePathRef framePath = CGPathCreateMutable(); 
-//		CGPathAddRect(framePath, NULL, frameRect); 
 		
 		CGContextSetTextMatrix(context, CGAffineTransformIdentity);
 		CGContextTranslateCTM(context, 0.0, self.bounds.size.height);
